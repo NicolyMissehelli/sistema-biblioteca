@@ -145,3 +145,7 @@ pytest -q
 ```
 
 Os testes cobrem health check e regras principais de empréstimos, devolução, atraso, limite de 3 empréstimos, reserva e renovação.
+
+
+## Integração com o frontend
+O frontend roda em `http://localhost:8080` e a API em `http://localhost:8000`. O CORS e o SQLite persistente em `/data/biblioteca.db` já estão configurados para essa arquitetura.

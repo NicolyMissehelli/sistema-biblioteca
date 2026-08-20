@@ -3,10 +3,22 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    container_name: biblioteca-backend
     ports:
       - "8000:8000"
     env_file:
       - .env
     volumes:
       - ./data:/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontend-biblioteca
+      dockerfile: Dockerfile
+    container_name: biblioteca-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
     restart: unless-stopped

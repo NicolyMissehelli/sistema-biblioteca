@@ -58,8 +58,13 @@ def login(data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
     return TokenResponse(access_token=create_access_token(str(user.id)))
 
 
+@app.get("/auth/me", response_model=UsuarioOut)
+def auth_me(user: Usuario = Depends(current_user)):
+    return user
+
+
 @app.post("/usuarios", response_model=UsuarioOut, status_code=201)
-def criar_usuario(data: UsuarioCreate, db: Session = Depends(get_db), _=Depends(require_roles(Perfil.ADMIN))):
+def criar_usuario(data: UsuarioCreate, db: Session = Depends(get_db), _=Depends(require_roles(Perfil.ADMIN, Perfil.BIBLIOTECARIO))):
     if db.scalar(select(Usuario).where(Usuario.email == data.email)):
         raise HTTPException(409, "Email já cadastrado")
     user = Usuario(
@@ -72,7 +77,7 @@ def criar_usuario(data: UsuarioCreate, db: Session = Depends(get_db), _=Depends(
 
 
 @app.get("/usuarios", response_model=list[UsuarioOut])
-def listar_usuarios(db: Session = Depends(get_db), _=Depends(require_roles(Perfil.ADMIN))):
+def listar_usuarios(db: Session = Depends(get_db), _=Depends(require_roles(Perfil.ADMIN, Perfil.BIBLIOTECARIO))):
     return list(db.scalars(select(Usuario).order_by(Usuario.nome)))
 
 
@@ -114,7 +119,22 @@ def listar_livros(
     stmt = select(Livro).order_by(Livro.titulo)
     if q:
         stmt = stmt.where((Livro.titulo.ilike(f"%{q}%")) | (Livro.autor.ilike(f"%{q}%")))
-    return list(db.scalars(stmt))
+    livros = list(db.scalars(stmt))
+    result = []
+    for livro in livros:
+        quantidade = db.scalar(select(func.count(Exemplar.id)).where(Exemplar.livro_id == livro.id)) or 0
+        disponiveis = db.scalar(select(func.count(Exemplar.id)).where(
+            Exemplar.livro_id == livro.id,
+            Exemplar.status == StatusExemplar.DISPONIVEL
+        )) or 0
+        result.append({
+            "id": livro.id, "titulo": livro.titulo, "autor": livro.autor,
+            "isbn": livro.isbn, "editora": livro.editora,
+            "ano_publicacao": livro.ano_publicacao, "categoria_id": livro.categoria_id,
+            "categoria_nome": livro.categoria.nome,
+            "quantidade": quantidade, "disponiveis": disponiveis
+        })
+    return result
 
 
 @app.post("/livros/{livro_id}/exemplares", response_model=ExemplarOut, status_code=201)
@@ -309,6 +329,18 @@ def pagar_multa(multa_id: int, db: Session = Depends(get_db), user: Usuario = De
     db.commit()
     db.refresh(multa)
     return multa
+
+
+
+
+@app.get("/dashboard")
+def dashboard(db: Session = Depends(get_db), _=Depends(require_roles(Perfil.ADMIN, Perfil.BIBLIOTECARIO))):
+    return {
+        "livros": db.scalar(select(func.count(Livro.id))) or 0,
+        "disponiveis": db.scalar(select(func.count(Exemplar.id)).where(Exemplar.status == StatusExemplar.DISPONIVEL)) or 0,
+        "alunos": db.scalar(select(func.count(Usuario.id)).where(Usuario.perfil == Perfil.LEITOR, Usuario.ativo == True)) or 0,
+        "emprestimos": db.scalar(select(func.count(Emprestimo.id)).where(Emprestimo.status == StatusEmprestimo.ATIVO)) or 0,
+    }
 
 
 @app.get("/relatorios/resumo")

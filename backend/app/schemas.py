@@ -52,10 +52,13 @@ class LivroOut(BaseModel):
     id: int
     titulo: str
     autor: str
-    isbn: str | None
-    editora: str | None
-    ano_publicacao: int | None
+    isbn: str | None = None
+    editora: str | None = None
+    ano_publicacao: int | None = None
     categoria_id: int
+    categoria_nome: str | None = None
+    quantidade: int = 0
+    disponiveis: int = 0
 
 
 class ExemplarCreate(BaseModel):
