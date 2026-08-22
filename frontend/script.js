@@ -12,9 +12,21 @@ let books=JSON.parse(localStorage.getItem("novarisBooks")||"null")||defaultBooks
 async function loadBooks(){
   try {
     const response = await fetch(`${API_URL}/livros`);
-    books = await response.json();
+    const data = await response.json();
+
+    books = data.map(livro => ({
+      id: livro.id,
+      title: livro.titulo,
+      author: livro.autor,
+      category: livro.categoria,
+      qty: livro.quantidade,
+      available: livro.disponiveis,
+      description: livro.descricao || "Sem descrição cadastrada."
+    }));
+
     renderBooks();
     updateStats();
+
   } catch(error){
     console.error("Erro ao carregar livros:", error);
   }
