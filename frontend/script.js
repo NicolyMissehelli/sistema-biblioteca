@@ -31,10 +31,26 @@ async function loadBooks(){
     console.error("Erro ao carregar livros:", error);
   }
 }
-let students=JSON.parse(localStorage.getItem("novarisStudents")||"null")||[
- {id:1,name:"Ana Souza",email:"ana@novaris.com"},
- {id:2,name:"Lucas Silva",email:"lucas@novaris.com"}
-];
+let students=[];
+
+async function loadStudents(){
+  try {
+    const response = await fetch(`${API_URL}/alunos`);
+    const data = await response.json();
+
+    students = data.map(aluno => ({
+      id: aluno.id,
+      name: aluno.nome,
+      email: aluno.email
+    }));
+
+    renderStudents();
+    updateStats();
+
+  } catch(error){
+    console.error("Erro ao carregar alunos:", error);
+  }
+}
 
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
@@ -80,15 +96,103 @@ function renderStudents(){
 }
 
 function openBook(id){
- const b=books.find(x=>x.id===id); if(!b)return;
- $("#modalContent").innerHTML=`<div class="modal-cover">${b.title.split(" ").map(x=>x[0]).slice(0,2).join("")}</div>
- <span class="badge ${b.available?"available":"unavailable"}">${b.available?`${b.available} disponível(is)`:"Indisponível"}</span>
- <h2>${b.title}</h2><p><strong>Autor:</strong> ${b.author}<br><strong>Categoria:</strong> ${b.category}<br><strong>Acervo:</strong> ${b.qty} exemplar(es)</p>
- <p>${b.description||"Sem descrição cadastrada."}</p>
- ${b.available?`<button class="primary-btn" id="loanBtn">Registrar empréstimo</button>`:"<button class='primary-btn' disabled>Sem exemplares disponíveis</button>"}`;
- $("#bookModal").classList.remove("hidden");
- const btn=$("#loanBtn");
- if(btn)btn.onclick=()=>{b.available--;save();updateStats();renderBooks(filterBooks());$("#bookModal").classList.add("hidden");toast("Empréstimo registrado com sucesso!");};
+  const b = books.find(x => x.id === id);
+  if(!b) return;
+
+  const alunosOptions = students.length
+    ? students.map(s =>
+        `<option value="${s.id}">${s.name} - ${s.email}</option>`
+      ).join("")
+    : `<option value="">Nenhum aluno cadastrado</option>`;
+
+  $("#modalContent").innerHTML = `
+    <div class="modal-cover">
+      ${b.title.split(" ").map(x => x[0]).slice(0,2).join("")}
+    </div>
+
+    <span class="badge ${b.available ? "available" : "unavailable"}">
+      ${b.available ? `${b.available} disponível(is)` : "Indisponível"}
+    </span>
+
+    <h2>${b.title}</h2>
+
+    <p>
+      <strong>Autor:</strong> ${b.author}<br>
+      <strong>Categoria:</strong> ${b.category}<br>
+      <strong>Acervo:</strong> ${b.qty} exemplar(es)
+    </p>
+
+    <p>${b.description || "Sem descrição cadastrada."}</p>
+
+    ${
+      b.available
+        ? `
+          <label>
+            Aluno
+            <select id="loanStudent" required>
+              <option value="">Selecione um aluno</option>
+              ${alunosOptions}
+            </select>
+          </label>
+
+          <button class="primary-btn" id="loanBtn">
+            Registrar empréstimo
+          </button>
+        `
+        : `
+          <button class="primary-btn" disabled>
+            Sem exemplares disponíveis
+          </button>
+        `
+    }
+  `;
+
+  $("#bookModal").classList.remove("hidden");
+
+  const btn = $("#loanBtn");
+
+  if(btn){
+    btn.onclick = async () => {
+      const alunoId = $("#loanStudent").value;
+
+      if(!alunoId){
+        toast("Selecione um aluno.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/emprestimos`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            livroId: b.id,
+            alunoId: Number(alunoId)
+          })
+        });
+
+        const data = await response.json();
+
+        if(!response.ok){
+          throw new Error(
+            data.mensagem || "Erro ao registrar empréstimo."
+          );
+        }
+
+        await loadBooks();
+        await updateStats();
+
+        $("#bookModal").classList.add("hidden");
+
+        toast("Empréstimo registrado com sucesso!");
+
+      } catch(error){
+        console.error("Erro ao registrar empréstimo:", error);
+        toast(error.message);
+      }
+    };
+  }
 }
 
 function filterBooks(){
@@ -125,17 +229,82 @@ $$("[data-page-jump]").forEach(b=>b.addEventListener("click",()=>showPage(b.data
 $("#searchInput").addEventListener("input",()=>renderBooks(filterBooks()));
 $("#categoryFilter").addEventListener("change",()=>renderBooks(filterBooks()));
 
-$("#bookForm").addEventListener("submit",e=>{
- e.preventDefault();
- const qty=Number($("#bookQty").value);
- books.unshift({id:Date.now(),title:$("#bookTitle").value.trim(),author:$("#bookAuthor").value.trim(),category:$("#bookCategory").value.trim(),qty,available:qty,description:$("#bookDescription").value.trim()});
- save();e.target.reset();$("#bookQty").value=1;updateStats();renderBooks();toast("Livro cadastrado com sucesso!");showPage("catalogo");
+$("#bookForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const titulo = $("#bookTitle").value.trim();
+  const autor = $("#bookAuthor").value.trim();
+  const categoria = $("#bookCategory").value.trim();
+  const quantidade = Number($("#bookQty").value);
+  const descricao = $("#bookDescription").value.trim();
+
+  try {
+    const response = await fetch(`${API_URL}/livros`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        titulo,
+        autor,
+        categoria,
+        quantidade,
+        descricao
+      })
+    });
+
+    if (!response.ok) {
+      const erro = await response.json();
+      throw new Error(erro.mensagem || "Erro ao cadastrar livro.");
+    }
+
+    e.target.reset();
+    $("#bookQty").value = 1;
+
+    await loadBooks();
+
+    toast("Livro cadastrado com sucesso!");
+    showPage("catalogo");
+
+  } catch (error) {
+    console.error("Erro ao cadastrar livro:", error);
+    toast(error.message);
+  }
 });
 
-$("#studentForm").addEventListener("submit",e=>{
- e.preventDefault();
- students.push({id:Date.now(),name:$("#studentName").value.trim(),email:$("#studentEmail").value.trim()});
- save();e.target.reset();updateStats();renderStudents();toast("Aluno cadastrado com sucesso!");
+$("#studentForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+
+  const nome = $("#studentName").value.trim();
+  const email = $("#studentEmail").value.trim();
+
+  try {
+    const response = await fetch(`${API_URL}/alunos`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        nome,
+        email
+      })
+    });
+
+    if(!response.ok){
+      const erro = await response.json();
+      throw new Error(erro.mensagem || "Erro ao cadastrar aluno.");
+    }
+
+    e.target.reset();
+
+    await loadStudents();
+
+    toast("Aluno cadastrado com sucesso!");
+
+  } catch(error){
+    console.error("Erro ao cadastrar aluno:",error);
+    toast(error.message);
+  }
 });
 
 $("#closeModal").onclick=()=>$("#bookModal").classList.add("hidden");
@@ -144,4 +313,4 @@ $("#bookModal").addEventListener("click",e=>{if(e.target.id==="bookModal")$("#bo
 const storedUser=localStorage.getItem("novarisUser");
 if(storedUser){$("#userEmail").textContent=storedUser;$("#loginScreen").classList.add("hidden");$("#app").classList.remove("hidden");}
 loadBooks();
-renderStudents();
+loadStudents();
