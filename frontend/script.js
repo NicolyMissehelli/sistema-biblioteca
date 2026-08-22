@@ -8,7 +8,7 @@ const defaultBooks=[
  {id:6,title:"1984",author:"George Orwell",category:"Ficção",qty:2,available:2,description:"Romance distópico sobre vigilância, poder e controle social."}
 ];
 
-let books=JSON.parse(localStorage.getItem("novarisBooks")||"null")||defaultBooks;
+let books = [];
 async function loadBooks(){
   try {
     const response = await fetch(`${API_URL}/livros`);
@@ -54,7 +54,6 @@ async function loadStudents(){
 
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
-const save=()=>{localStorage.setItem("novarisBooks",JSON.stringify(books));localStorage.setItem("novarisStudents",JSON.stringify(students))};
 const toast=(msg)=>{const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400)};
 
 function bookCard(b){
