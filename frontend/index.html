@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novaris Tech — Biblioteca</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="login-brand">
+        <img src="assets/novaris-tech-logo.png" alt="Novaris Tech">
+        <span>Sistema de Biblioteca</span>
+      </div>
+      <h1>Bem-vindo</h1>
+      <p>Entre para acessar o catálogo da biblioteca.</p>
+      <form id="loginForm">
+        <label>E-mail
+          <input id="loginEmail" type="email" placeholder="seu@email.com" required>
+        </label>
+        <label>Senha
+          <div class="password-wrap">
+            <input id="loginPassword" type="password" placeholder="••••••••" required>
+            <button type="button" id="togglePassword" aria-label="Mostrar senha">Mostrar</button>
+          </div>
+        </label>
+        <button class="primary-btn full" type="submit">Entrar</button>
+      </form>
+      <small>Demo: qualquer e-mail e senha com 4+ caracteres.</small>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="side-logo">
+        <img src="assets/novaris-tech-logo.png" alt="Novaris Tech">
+        <div><strong>Biblioteca</strong><span>Novaris Tech</span></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-page="dashboard">⌂ <span>Início</span></button>
+        <button class="nav-item" data-page="catalogo">▣ <span>Catálogo</span></button>
+        <button class="nav-item" data-page="livros">＋ <span>Cadastrar livro</span></button>
+        <button class="nav-item" data-page="alunos">♙ <span>Alunos</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-page="ajuda">? <span>Ajuda</span></button>
+        <button id="logoutBtn" class="nav-item logout">↪ <span>Sair</span></button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">SISTEMA DE BIBLIOTECA</div>
+          <h2 id="pageTitle">Visão geral</h2>
+        </div>
+        <div class="user-chip">
+          <div class="avatar">NT</div>
+          <div><strong id="userEmail">Usuário</strong><span>Administrador</span></div>
+        </div>
+      </header>
+
+      <section id="page-dashboard" class="page">
+        <div class="hero">
+          <div>
+            <span class="pill">NOVARIS TECH</span>
+            <h1>Seu conhecimento,<br><em>organizado.</em></h1>
+            <p>Encontre livros rapidamente, consulte a disponibilidade e mantenha o acervo atualizado.</p>
+            <button class="primary-btn" data-page-jump="catalogo">Explorar catálogo →</button>
+          </div>
+          <div class="hero-mark">NT</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span>Livros</span><strong id="statBooks">0</strong><small>no catálogo</small></div>
+          <div class="stat"><span>Disponíveis</span><strong id="statAvailable">0</strong><small>para empréstimo</small></div>
+          <div class="stat"><span>Alunos</span><strong id="statStudents">0</strong><small>cadastrados</small></div>
+          <div class="stat"><span>Empréstimos</span><strong id="statLoans">0</strong><small>ativos</small></div>
+        </div>
+
+        <div class="section-head">
+          <div><h3>Livros em destaque</h3><span>Alguns títulos do catálogo</span></div>
+          <button class="text-btn" data-page-jump="catalogo">Ver catálogo →</button>
+        </div>
+        <div id="featuredBooks" class="book-grid"></div>
+      </section>
+
+      <section id="page-catalogo" class="page hidden">
+        <div class="section-head">
+          <div><h3>Catálogo de livros</h3><span>Pesquise por título, autor ou categoria</span></div>
+          <button class="primary-btn small" data-page-jump="livros">+ Novo livro</button>
+        </div>
+        <div class="search-panel">
+          <div class="search-box">⌕ <input id="searchInput" placeholder="Pesquisar livro, autor ou categoria..."></div>
+          <select id="categoryFilter"><option value="">Todas as categorias</option></select>
+        </div>
+        <div id="catalogGrid" class="book-grid"></div>
+      </section>
+
+      <section id="page-livros" class="page hidden">
+        <div class="section-head"><div><h3>Cadastrar livro</h3><span>Adicione um novo título ao catálogo</span></div></div>
+        <form id="bookForm" class="form-card">
+          <div class="form-grid">
+            <label>Título *<input id="bookTitle" required placeholder="Ex.: Clean Code"></label>
+            <label>Autor *<input id="bookAuthor" required placeholder="Ex.: Robert C. Martin"></label>
+            <label>Categoria *<input id="bookCategory" required placeholder="Ex.: Programação"></label>
+            <label>Quantidade *<input id="bookQty" type="number" min="1" value="1" required></label>
+          </div>
+          <label>Descrição<textarea id="bookDescription" rows="4" placeholder="Breve descrição do livro..."></textarea></label>
+          <button class="primary-btn" type="submit">Cadastrar livro</button>
+        </form>
+      </section>
+
+      <section id="page-alunos" class="page hidden">
+        <div class="section-head"><div><h3>Cadastro de alunos</h3><span>Gerencie os usuários que podem realizar empréstimos</span></div></div>
+        <form id="studentForm" class="form-card">
+          <div class="form-grid">
+            <label>Nome completo *<input id="studentName" required placeholder="Nome do aluno"></label>
+            <label>E-mail *<input id="studentEmail" type="email" required placeholder="aluno@email.com"></label>
+          </div>
+          <button class="primary-btn" type="submit">Cadastrar aluno</button>
+        </form>
+        <div id="studentsList" class="list-card"></div>
+      </section>
+
+      <section id="page-ajuda" class="page hidden">
+        <div class="help-card">
+          <div class="help-icon">?</div>
+          <h3>Como usar o sistema?</h3>
+          <ol>
+            <li>Faça login com seu e-mail e senha.</li>
+            <li>Acesse o <strong>Catálogo</strong> para pesquisar livros por título, autor ou categoria.</li>
+            <li>Confira o selo de disponibilidade em cada livro.</li>
+            <li>Use <strong>Cadastrar livro</strong> para adicionar títulos ao acervo.</li>
+            <li>Cadastre alunos antes de registrar empréstimos.</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="bookModal" class="modal hidden">
+    <div class="modal-box">
+      <button class="close-modal" id="closeModal">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

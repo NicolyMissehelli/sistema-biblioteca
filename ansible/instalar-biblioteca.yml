@@ -1,0 +1,37 @@
+---
+- name: Configurar e iniciar Sistema Biblioteca
+  hosts: servidor
+
+  tasks:
+
+    - name: Verificar se Docker está instalado
+      command: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Exibir versão do Docker
+      debug:
+        msg: "{{ docker_version.stdout }}"
+
+    - name: Verificar se Docker Compose está disponível
+      command: docker compose version
+      register: compose_version
+      changed_when: false
+
+    - name: Exibir versão do Docker Compose
+      debug:
+        msg: "{{ compose_version.stdout }}"
+
+    - name: Subir aplicação com Docker Compose
+      command: docker compose up --build -d
+      args:
+        chdir: "{{ playbook_dir }}/.."
+
+    - name: Verificar containers em execução
+      command: docker ps
+      register: docker_ps
+      changed_when: false
+
+    - name: Exibir containers
+      debug:
+        var: docker_ps.stdout_lines

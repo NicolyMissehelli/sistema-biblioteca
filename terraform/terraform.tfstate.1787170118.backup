@@ -1,0 +1,119 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.8",
+  "serial": 9,
+  "lineage": "b74b3481-4908-d05e-c938-c7fb5c281f10",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "docker_image",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/kreuzwerker/docker\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "build": [
+              {
+                "additional_contexts": [],
+                "auth_config": [],
+                "build_args": {},
+                "build_id": "",
+                "build_log_file": "",
+                "builder": "",
+                "cache_from": [],
+                "cache_to": [],
+                "cgroup_parent": "",
+                "context": "../backend",
+                "cpu_period": 0,
+                "cpu_quota": 0,
+                "cpu_set_cpus": "",
+                "cpu_set_mems": "",
+                "cpu_shares": 0,
+                "dockerfile": "Dockerfile",
+                "extra_hosts": [],
+                "force_remove": false,
+                "isolation": "",
+                "label": {},
+                "labels": {},
+                "memory": 0,
+                "memory_swap": 0,
+                "network_mode": "",
+                "no_cache": false,
+                "platform": "",
+                "pull_parent": false,
+                "remote_context": "",
+                "remove": true,
+                "secrets": [],
+                "security_opt": [],
+                "session_id": "",
+                "shm_size": 0,
+                "squash": false,
+                "suppress_output": false,
+                "tag": [],
+                "target": "",
+                "ulimit": [],
+                "version": ""
+              }
+            ],
+            "force_remove": null,
+            "id": "sha256:2865ec830241c88375117a1b7fea2733e4ce147bc5319bba76f8d29e46da34eabiblioteca-backend:latest",
+            "image_id": "sha256:2865ec830241c88375117a1b7fea2733e4ce147bc5319bba76f8d29e46da34ea",
+            "keep_locally": null,
+            "name": "biblioteca-backend:latest",
+            "platform": null,
+            "pull_triggers": null,
+            "repo_digest": "biblioteca-backend@sha256:2865ec830241c88375117a1b7fea2733e4ce147bc5319bba76f8d29e46da34ea",
+            "timeouts": null,
+            "triggers": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "docker_network",
+      "name": "biblioteca",
+      "provider": "provider[\"registry.terraform.io/kreuzwerker/docker\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "attachable": false,
+            "check_duplicate": null,
+            "driver": "bridge",
+            "id": "095e389a1af965f56ae63174ec49ad7618bf5705b39217ff5b912f9881740a32",
+            "ingress": false,
+            "internal": false,
+            "ipam_config": [
+              {
+                "aux_address": {},
+                "gateway": "172.19.0.1",
+                "ip_range": "",
+                "subnet": "172.19.0.0/16"
+              }
+            ],
+            "ipam_driver": "default",
+            "ipam_options": {},
+            "ipv6": false,
+            "labels": [],
+            "name": "biblioteca-network",
+            "options": {
+              "com.docker.network.enable_ipv4": "true",
+              "com.docker.network.enable_ipv6": "false"
+            },
+            "scope": "local"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
