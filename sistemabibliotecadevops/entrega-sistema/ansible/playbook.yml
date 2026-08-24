@@ -1,0 +1,50 @@
+---
+- name: Preparar servidor Ubuntu da Biblioteca
+  hosts: servidor
+  become: true
+  gather_facts: true
+
+  vars:
+    docker_user: "{{ ansible_user_id }}"
+
+  tasks:
+    - name: Atualizar cache do APT
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Verificar se o Docker CLI já está disponível
+      ansible.builtin.command: docker --version
+      register: docker_cli
+      changed_when: false
+      failed_when: false
+
+    - name: Instalar Docker e dependências quando necessário
+      ansible.builtin.apt:
+        name:
+          - docker.io
+          - python3-docker
+        state: present
+      when: docker_cli.rc != 0
+
+    - name: Verificar se o serviço Docker existe
+      ansible.builtin.command: systemctl list-unit-files docker.service
+      register: docker_service
+      changed_when: false
+      failed_when: false
+
+    - name: Garantir que o serviço Docker esteja ativo quando houver systemd
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+      when:
+        - docker_service.rc == 0
+        - "'docker.service' in docker_service.stdout"
+
+    - name: Adicionar usuário atual ao grupo docker quando o grupo existir
+      ansible.builtin.user:
+        name: "{{ docker_user }}"
+        groups: docker
+        append: true
+      when: ansible_facts.getent_group is defined and 'docker' in ansible_facts.getent_group

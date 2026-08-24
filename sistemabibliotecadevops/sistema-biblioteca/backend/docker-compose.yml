@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: biblioteca-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/data
+    networks:
+      - biblioteca-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontonly
+      dockerfile: Dockerfile
+    container_name: biblioteca-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - biblioteca-network
+    restart: unless-stopped
+
+networks:
+  biblioteca-network:
+    name: biblioteca-network
