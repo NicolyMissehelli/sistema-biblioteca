@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 COPY database ./database
-COPY .env.example ./.env.example
+
 
 EXPOSE 8000
 
