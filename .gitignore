@@ -1,0 +1,36 @@
+# Terraform local state
+terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.*
+terraform/crash.log
+terraform/crash.*.log
+
+# Local secrets / environment files
+.env
+*.env.local
+# Node
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Variáveis de ambiente
+.env
+.env.*
+
+# Bancos SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# Banco criado pelos testes
+test_biblioteca.db
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

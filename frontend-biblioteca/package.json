@@ -1,0 +1,13 @@
+{
+  "name": "frontend-biblioteca",
+  "version": "1.0.0",
+  "description": "Frontend do Sistema da Biblioteca",
+  "private": true,
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.0"
+  }
+}

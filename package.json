@@ -1,0 +1,17 @@
+{
+  "name": "sistema-biblioteca",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema da Biblioteca - projeto com CI/CD e Docker",
+  "scripts": {
+    "postinstall": "python -m pip install -r backendcombanco/requirements.txt && npm install --prefix frontend-biblioteca",
+    "test:frontend": "npm test --prefix frontend-biblioteca",
+    "test:backend": "python -m pytest backendcombanco",
+    "test": "npm run test:frontend && npm run test:backend",
+    "start": "docker compose -f backendcombanco/docker-compose.yml up --build",
+    "start:background": "docker compose -f backendcombanco/docker-compose.yml up -d --build",
+    "stop": "docker compose -f backendcombanco/docker-compose.yml down",
+    "logs": "docker compose -f backendcombanco/docker-compose.yml logs -f",
+    "docker:build": "docker compose -f backendcombanco/docker-compose.yml build"
+  }
+}
