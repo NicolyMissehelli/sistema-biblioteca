@@ -32,7 +32,7 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 2. Keroly
 3. Nicoly
 4. Pedro Paulo
-5. Tacyo
+5. Rhoney
 
 ---
 
