@@ -33,6 +33,8 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 3. Nicoly
 4. Pedro Paulo
 5. Rhoney
+6. Tacyo Henrique
+
 
 ---
 
