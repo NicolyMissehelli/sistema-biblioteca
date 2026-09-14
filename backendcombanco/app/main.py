@@ -50,6 +50,12 @@ def health():
     return {"status": "ok", "service": "biblioteca-api"}
 
 
+@app.get("/version")
+def version():
+    return {"version": "1.0.0", "status": "online", "service": "biblioteca-api"}
+
+
+
 @app.post("/auth/login", response_model=TokenResponse)
 def login(data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.scalar(select(Usuario).where(Usuario.email == data.username))

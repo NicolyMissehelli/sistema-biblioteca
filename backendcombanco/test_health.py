@@ -6,3 +6,11 @@ def test_health():
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
+
+def test_version():
+    client = TestClient(app)
+    response = client.get("/version")
+    assert response.status_code == 200
+    assert response.json()["version"] == "1.0.0"
+    assert response.json()["status"] == "online"
+
