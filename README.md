@@ -237,7 +237,14 @@ Backend
 
 O backend utiliza Pytest.
 
+#### Classificação dos Testes - `backendcombanco/test_health.py` (Responsável: Tacyo Henrique)
+- **`test_health()`**: **Teste de Fumaça (Smoke Test)** — Verifica se a API está online e respondendo com status HTTP 200.
+- **`test_version()`**: **Teste de Sanidade (Sanity Test) / Smoke Test** — Garante que a API responde com a versão 1.0.0 e estado ativo.
+
+*(Nota: Os testes de fluxo de negócio em `test_api.py` e os testes do frontend em `frontend.test.js` serão detalhados e classificados no README pelos respectivos integrantes).*
+
 Os testes verificam o funcionamento da API e um fluxo básico das operações da biblioteca, incluindo:
+
 
 Endpoint /health;
 Autenticação;
