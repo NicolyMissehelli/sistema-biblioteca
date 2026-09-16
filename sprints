@@ -1,0 +1,198 @@
+Planejamento da Sprint 1 — Sistema da Biblioteca
+
+Período: 16/09/2026 a 21/09/2026  
+
+Product Owner e Scrum Master: Nicoly Missehelli;
+Desenvolvedores: Pedro Paulo, Rhoney Thiago e Tacyo Henrique;
+DevOpS: Kerolyn;
+Analista de Requisitos: Gabriel Alves.
+
+ 1. Objetivo da Sprint
+
+Organizar e validar o trabalho já desenvolvido no Sistema da Biblioteca, considerando que o frontend e o backend já foram implementados, os testes já foram realizados e o projeto foi apresentado até a etapa de CI/CD.
+
+Nesta Sprint, nosso foco será levantar o que já foi feito, identificar pendências, classificar os testes automatizados, conferir o pipeline e organizar as evidências necessárias para as Atividades Integradoras 1 e 2.
+
+2. Levantamento inicial da equipe
+
+Durante o planejamento, vamos verificar:
+
+- [ ] Testes automatizados existentes no backend.
+- [ ] Testes automatizados existentes no frontend.
+- [ ] Quantidade de testes implementados em cada parte.
+- [ ] Finalidade e classificação de cada teste.
+- [ ] Execução dos testes por um único comando.
+- [ ] Funcionamento do GitHub Actions.
+- [ ] Execução do build Docker após os testes.
+- [ ] Simulação de falha no pipeline.
+- [ ] Atualização do README e das evidências.
+- [ ] Commits identificados de todos os integrantes.
+
+3. Product Backlog
+
+| ID | Item | Prioridade |
+|---|---|---|
+| PB01 | Levantar testes do backend | Alta |
+| PB02 | Levantar testes do frontend | Alta |
+| PB03 | Classificar os testes automatizados | Alta |
+| PB04 | Conferir execução por comando único | Alta |
+| PB05 | Validar GitHub Actions | Alta |
+| PB06 | Conferir build Docker | Alta |
+| PB07 | Realizar simulação de falha | Alta |
+| PB08 | Atualizar README | Média |
+| PB09 | Atualizar Kanban | Alta |
+| PB10 | Conferir commits dos integrantes | Alta |
+
+4. Sprint Backlog e responsabilidades
+
+| ID | Tarefa | Responsável |
+|---|---|---|
+| SB01 | Levantar o que já foi realizado | Equipe |
+| SB02 | Conferir testes do backend | DevOps |
+| SB03 | Conferir testes do frontend | DevOps |
+| SB04 | Classificar cada teste | Analista de Requisitos |
+| SB05 | Conferir comando de execução | Desenvolvedores |
+| SB06 | Validar GitHub Actions e Docker | DevOps |
+| SB07 | Simular falha e corrigir pipeline | DevOps + equipe |
+| SB08 | Atualizar o Kanban | Scrum Master |
+| SB09 | Atualizar README e evidências | Product Owner + Analista |
+| SB10 | Conferir commits individuais | Scrum Master |
+
+> A distribuição dos integrantes será confirmada durante a reunião da equipe, conforme os papéis e a disponibilidade de cada membro.
+
+5. Cronograma da Sprint
+
+📅 16/09 — Quarta-feira
+Levantamento e diagnóstico
+
+- Reunir a equipe.
+- Levantar as funcionalidades e testes já realizados.
+- Conferir o que foi apresentado sobre CI/CD.
+- Identificar pendências.
+- Atualizar o Kanban.
+
+Entrega esperada: lista do que foi concluído, está pendente ou precisa de validação.
+
+📅 17/09 — Quinta-feira
+Conferência e classificação dos testes
+
+- Verificar os testes do backend e frontend.
+- Confirmar o mínimo exigido de 2 testes no backend e 2 no frontend.
+- Classificar os testes como Smoke, Sanidade ou Regressão.
+- Executar os testes localmente.
+
+Entrega esperada: tabela de testes com classificação e resultados.
+
+📅 18/09 — Sexta-feira
+Validação do CI/CD
+
+- Conferir o workflow do GitHub Actions.
+- Verificar a execução dos testes.
+- Conferir a ordem do build Docker.
+- Corrigir possíveis problemas.
+- Realizar commits e push no GitHub.
+
+Entrega esperada: pipeline validado ou pendências registradas.
+
+📅 19/09 — Sábado
+Simulação de falha
+
+1. Provocar temporariamente uma falha em um teste.
+2. Executar o pipeline.
+3. Registrar o erro.
+4. Confirmar a reprovação do pipeline.
+5. Corrigir o problema.
+6. Executar novamente.
+7. Confirmar a aprovação do pipeline.
+
+Entrega esperada: evidência da falha, correção e aprovação.
+
+📅 20/09 — Domingo
+Documentação e organização
+
+- Atualizar o README.
+- Conferir o Product Backlog e Sprint Backlog.
+- Atualizar o Kanban.
+- Organizar os registros dos testes.
+- Reunir prints e links do GitHub Actions.
+- Conferir os commits de todos os integrantes.
+
+**Entrega esperada:** documentação e evidências organizadas.
+
+📅 21/09 — Segunda-feira
+Revisão e encerramento da Sprint
+
+- Revisar as tarefas concluídas.
+- Conferir a Definition of Done.
+- Verificar o pipeline aprovado.
+- Conferir os commits dos integrantes.
+- Identificar pendências.
+- Preparar a apresentação final.
+
+Entrega esperada: Sprint revisada e materiais organizados para entrega.
+
+6. Organização do Kanban
+
+Nosso quadro será organizado nas seguintes colunas:
+
+| Coluna | Significado |
+|---|---|
+| Backlog | Tarefas ainda não selecionadas |
+| A Fazer | Tarefas selecionadas para a Sprint |
+| Em Andamento | Tarefas em execução |
+| Em Teste | Tarefas aguardando validação |
+| Concluído | Tarefas aprovadas |
+
+Cada cartão deverá conter:
+
+- Nome e descrição da tarefa.
+- Responsável.
+- Prioridade.
+- Estimativa.
+- Tipo de teste, quando aplicável.
+- Critério de aceitação.
+- Situação atual.
+
+7. Classificação dos testes
+
+| Teste | Funcionalidade | Classificação | Resultado esperado |
+|---|---|---|---|
+| Teste 1 | Disponibilidade da API | Smoke | HTTP 200 |
+| Teste 2 | Cadastro de livro | Sanidade | Livro cadastrado |
+| Teste 3 | Consulta de livros | Regressão | Lista apresentada |
+| Teste 4 | Formulário do frontend | Regressão | Campos validados |
+
+A classificação deverá ser confirmada de acordo com a finalidade real dos testes implementados pela equipe.
+
+8. Definition of Done
+
+Uma tarefa será considerada concluída quando:
+
+- [ ] A funcionalidade estiver implementada, quando aplicável.
+- [ ] O teste automatizado estiver criado, quando aplicável.
+- [ ] O teste executar localmente.
+- [ ] O código estiver no GitHub.
+- [ ] O pipeline estiver aprovado.
+- [ ] O critério de aceitação for atendido.
+- [ ] O cartão do Kanban estiver atualizado.
+
+9. Entregas obrigatórias
+
+- [ ] Link do repositório GitHub.
+- [ ] Link ou imagem do quadro Kanban.
+- [ ] Product Backlog e Sprint Backlog.
+- [ ] Código dos testes automatizados.
+- [ ] Workflow do GitHub Actions.
+- [ ] README.md atualizado.
+- [ ] Pipeline executado com sucesso.
+- [ ] Histórico de commits dos integrantes.
+- [ ] Evidência da simulação de falha e correção.
+
+10. Resultado esperado
+
+Ao final da Sprint, nossa equipe deverá ter uma visão clara do que já foi realizado, do que foi validado e do que ainda precisa ser corrigido.
+
+Nosso objetivo é concluir as pendências prioritárias, classificar os testes, validar o CI/CD, atualizar a documentação e organizar as evidências para a entrega das Atividades Integradoras 1 e 2.
+
+Responsável pela organização: Nicoly Missehelli Lima de Oliveira  
+Funções: Product Owner e Scrum Master
