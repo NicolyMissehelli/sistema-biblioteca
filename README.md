@@ -5,7 +5,7 @@ Sistema web para gerenciamento de uma biblioteca, desenvolvido com foco no geren
 O projeto também possui uma estrutura de DevOps, utilizando Docker, Docker Compose, testes automatizados e GitHub Actions para implementar um fluxo de CI/CD.
 
 ---
-
+ 
 ## 🎯 Objetivo do Projeto
 
 O Sistema de Biblioteca tem como objetivo disponibilizar uma aplicação para gerenciamento das principais operações de uma biblioteca.
