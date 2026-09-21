@@ -32,15 +32,12 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 
 ## 👥 Integrantes e Papéis
 
-> **Aviso:** Cada integrante precisa assumir pelo menos um dos papéis (Product Owner, Scrum Master, Analista de Requisitos, Desenvolvedor, Responsável por Testes, DevOps).
-
-1. Gabriel - *[Definir papel]*
-2. Keroly - *[Definir papel]*
-3. Nicoly - *[Definir papel]*
-4. Pedro Paulo - *[Definir papel]*
-5. Rhoney - *[Definir papel]*
+1. Gabriel - _[Definir papel]_
+2. Keroly - _[Definir papel]_
+3. Nicoly - _[Definir papel]_
+4. Pedro Paulo - _[Definir papel]_
+5. Rhoney - _[Definir papel]_
 6. Tacyo Henrique - Desenvolvedor Backend / Responsável por Testes / DevOps
-
 
 ---
 
@@ -402,3 +399,4 @@ Atualmente, o projeto possui:
 Projeto desenvolvido para fins acadêmicos.
 
 
+```
