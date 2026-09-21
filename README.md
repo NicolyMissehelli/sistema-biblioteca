@@ -10,6 +10,10 @@ O projeto também possui uma estrutura de DevOps, utilizando Docker, Docker Comp
 
 O Sistema de Biblioteca tem como objetivo disponibilizar uma aplicação para gerenciamento das principais operações de uma biblioteca.
 
+## 🎯 Objetivo da Sprint
+
+Implementar testes automatizados para as funcionalidades essenciais do sistema da biblioteca e executar esses testes no pipeline de CI/CD, garantindo o funcionamento do backend e frontend.
+
 Entre as funcionalidades do sistema estão:
 
 - Cadastro e gerenciamento de livros;
@@ -26,15 +30,24 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 
 ---
 
-## 👥 Integrantes
+## 👥 Integrantes e Papéis
 
-1. Gabriel
-2. Keroly
-3. Nicoly
-4. Pedro Paulo
-5. Rhoney
-6. Tacyo Henrique
+> **Aviso:** Cada integrante precisa assumir pelo menos um dos papéis (Product Owner, Scrum Master, Analista de Requisitos, Desenvolvedor, Responsável por Testes, DevOps).
 
+1. Gabriel - *[Definir papel]*
+2. Keroly - *[Definir papel]*
+3. Nicoly - *[Definir papel]*
+4. Pedro Paulo - *[Definir papel]*
+5. Rhoney - *[Definir papel]*
+6. Tacyo Henrique - Desenvolvedor Backend / Responsável por Testes / DevOps
+
+
+---
+
+## 📊 Quadro Kanban
+
+O acompanhamento das tarefas da Sprint (Sprint Backlog) é realizado no nosso quadro do Trello.
+🔗 **Link do Quadro:** [Trello - Biblioteca Novaris Tech](https://trello.com/b/tseoOgOv)
 
 ---
 
@@ -237,11 +250,16 @@ Backend
 
 O backend utiliza Pytest.
 
-#### Classificação dos Testes - `backendcombanco/test_health.py` (Responsável: Tacyo Henrique)
-- **`test_health()`**: **Teste de Fumaça (Smoke Test)** — Verifica se a API está online e respondendo com status HTTP 200.
-- **`test_version()`**: **Teste de Sanidade (Sanity Test) / Smoke Test** — Garante que a API responde com a versão 1.0.0 e estado ativo.
+#### Classificação dos Testes
 
-*(Nota: Os testes de fluxo de negócio em `test_api.py` e os testes do frontend em `frontend.test.js` serão detalhados e classificados no README pelos respectivos integrantes).*
+| Arquivo de Teste | Funcionalidade | Classificação | Resultado esperado |
+| --- | --- | --- | --- |
+| `test_health.py` | Disponibilidade da API | Smoke Test | API responde com HTTP 200 |
+| `test_health.py` | Versão do build/deploy | Sanidade / Smoke | Versão 1.0.0 ativa |
+| `test_api.py` | Fluxo completo (Login, Livros, Empréstimo) | Regressão / E2E | Regras de negócio executadas sem erro |
+| `frontend.test.js` | *[Front vai preencher]* | *[Front vai preencher]* | *[Front vai preencher]* |
+
+*(Nota: Os testes de backend acima foram implementados e classificados por Tacyo. O integrante do frontend atualizará as informações do `frontend.test.js`.)*
 
 Os testes verificam o funcionamento da API e um fluxo básico das operações da biblioteca, incluindo:
 
