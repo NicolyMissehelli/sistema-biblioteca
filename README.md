@@ -5,7 +5,7 @@ Sistema web para gerenciamento de uma biblioteca, desenvolvido com foco no geren
 O projeto também possui uma estrutura de DevOps, utilizando Docker, Docker Compose, testes automatizados e GitHub Actions para implementar um fluxo de CI/CD.
 
 ---
-
+ 
 ## 🎯 Objetivo do Projeto
 
 O Sistema de Biblioteca tem como objetivo disponibilizar uma aplicação para gerenciamento das principais operações de uma biblioteca.
@@ -32,11 +32,11 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 
 ## 👥 Integrantes e Papéis
 
-1. Gabriel - _[Definir papel]_
-2. Keroly - _[Definir papel]_
-3. Nicoly - _[Definir papel]_
-4. Pedro Paulo - _[Definir papel]_
-5. Rhoney - _[Definir papel]_
+1. Gabriel - Analista de ifraestrutura
+2. Keroly - DevOps
+3. Nicoly - Product Owner / Scrum Master
+4. Pedro Paulo - Desenvolvedor
+5. Rhoney - Desenvolvedor
 6. Tacyo Henrique - Desenvolvedor Backend / Responsável por Testes / DevOps
 
 ---
