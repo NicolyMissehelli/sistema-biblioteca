@@ -1,3 +1,4 @@
+
 name: CI/CD - Sistema Biblioteca
 
 on:
@@ -13,76 +14,53 @@ on:
 jobs:
 
   # ============================================================
-  # CI - TESTES
+  # CI - TESTES BACKEND
   # ============================================================
 
-  test:
-    name: Testes
+  test-backend:
+    name: Testes Backend
     runs-on: ubuntu-latest
 
     steps:
 
-      # ----------------------------------------------------------
-      # 1. Baixar o código do repositório
-      # ----------------------------------------------------------
-
       - name: Baixar código
         uses: actions/checkout@v4
-
-
-      # ----------------------------------------------------------
-      # 2. Configurar Python
-      # ----------------------------------------------------------
 
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
 
+      - name: Instalar dependências Backend
+        run: python -m pip install -r backendcombanco/requirements.txt
 
-      # ----------------------------------------------------------
-      # 3. Configurar Node.js
-      # ----------------------------------------------------------
+      - name: Executar testes Backend
+        run: python -m pytest backendcombanco
+
+
+  # ============================================================
+  # CI - TESTES FRONTEND
+  # ============================================================
+
+  test-frontend:
+    name: Testes Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Baixar código
+        uses: actions/checkout@v4
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
+      - name: Instalar dependências Frontend
+        run: npm install --prefix frontend-biblioteca
 
-      # ----------------------------------------------------------
-      # 4. Instalar dependências Python
-      # ----------------------------------------------------------
-
-      - name: Instalar dependências Python
-        run: python -m pip install -r backendcombanco/requirements.txt
-
-
-      # ----------------------------------------------------------
-      # 5. Instalar dependências Node.js
-      #
-      # O npm install da raiz executa o postinstall,
-      # instalando as dependências do frontend.
-      # ----------------------------------------------------------
-
-      - name: Instalar dependências Node.js
-        run: npm install
-
-
-      # ----------------------------------------------------------
-      # 6. Executar todos os testes
-      #
-      # O npm test executa:
-      #
-      # - 2 testes do frontend
-      # - 3 testes do backend
-      #
-      # Se qualquer teste falhar, este job falha.
-      # Consequentemente, o Docker Build NÃO será executado.
-      # ----------------------------------------------------------
-
-      - name: Executar testes
-        run: npm test
+      - name: Executar testes Frontend
+        run: npm test --prefix frontend-biblioteca
 
 
   # ============================================================
@@ -93,30 +71,14 @@ jobs:
     name: Docker Build
     runs-on: ubuntu-latest
 
-    # O Docker só pode ser executado se o job de testes
-    # terminar com sucesso.
-    needs: test
+    needs:
+      - test-backend
+      - test-frontend
 
     steps:
 
-      # ----------------------------------------------------------
-      # 1. Baixar o código
-      # ----------------------------------------------------------
-
       - name: Baixar código
         uses: actions/checkout@v4
-
-
-      # ----------------------------------------------------------
-      # 2. Construir as imagens Docker
-      #
-      # O docker-compose do backend já possui os serviços:
-      #
-      # - backend
-      # - frontend
-      #
-      # Portanto, o build gera as duas imagens.
-      # ----------------------------------------------------------
 
       - name: Construir imagens Docker
         run: docker compose -f backendcombanco/docker-compose.yml build
