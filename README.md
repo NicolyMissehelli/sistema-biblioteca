@@ -122,130 +122,129 @@ entrega-sistema/
 ├── deploy.sh
 ├── destroy.sh
 └── .gitignore
-⚙️ Pré-requisitos
+## ⚙️ Pré-requisitos
 
 Para executar o projeto localmente, é necessário possuir:
 
-Git;
-Node.js 20 ou superior;
-npm;
-Python 3.13 ou compatível;
-Docker;
-Docker Compose.
-📥 Instalação
+- Git;
+- Node.js 20 ou superior;
+- npm;
+- Python 3.13 ou compatível;
+- Docker;
+- Docker Compose.
+
+---
+
+## 📥 Instalação
 
 Após clonar o repositório, entre na pasta do projeto:
 
+```bash
 cd entrega-sistema
+```
 
 A instalação das dependências pode ser realizada através de um único comando:
 
+```bash
 npm install
+```
 
-O comando npm install executa o script postinstall, responsável por instalar as dependências do backend e do frontend.
+O comando `npm install` executa o script `postinstall`, responsável por instalar as dependências do backend e do frontend.
 
 As dependências do backend são instaladas a partir do arquivo:
-
-backendcombanco/requirements.txt
+`backendcombanco/requirements.txt`
 
 As dependências do frontend são instaladas a partir do arquivo:
+`frontend-biblioteca/package.json`
 
-frontend-biblioteca/package.json
-▶️ Executando o Sistema
+---
+
+## ▶️ Executando o Sistema
 
 Para iniciar o sistema utilizando Docker Compose:
 
+```bash
 npm start
+```
 
 Esse comando realiza o build das imagens e inicia os serviços do projeto.
 
-Frontend
-
+### Frontend
 O frontend pode ser acessado em:
-
 http://localhost:8080
-Backend
 
+### Backend
 A API pode ser acessada em:
-
 http://localhost:8000
-Documentação da API
 
+### Documentação da API
 A documentação interativa da API pode ser acessada em:
-
 http://localhost:8000/docs
-🐳 Docker
+
+---
+
+## 🐳 Docker
 
 O projeto utiliza containers Docker para executar seus componentes.
 
-Dockerfile do Backend
-
-O Dockerfile do backend está localizado em:
-
-backendcombanco/docker/Dockerfile
-Dockerfile do Frontend
-
-O Dockerfile do frontend está localizado em:
-
-frontend-biblioteca/Dockerfile
-Docker Compose
-
-O arquivo responsável pela execução dos serviços está localizado em:
-
-backendcombanco/docker-compose.yml
+- **Dockerfile do Backend:** `backendcombanco/docker/Dockerfile`
+- **Dockerfile do Frontend:** `frontend-biblioteca/Dockerfile`
+- **Docker Compose:** `backendcombanco/docker-compose.yml`
 
 O Docker Compose realiza a execução dos serviços de backend e frontend.
 
-Construir as imagens
+### Comandos Docker:
 
-Para construir as imagens Docker:
+- **Construir as imagens:**
+  ```bash
+  npm run docker:build
+  ```
+- **Iniciar o sistema:**
+  ```bash
+  npm start
+  ```
+- **Iniciar em segundo plano:**
+  ```bash
+  npm run start:background
+  ```
+- **Visualizar os logs:**
+  ```bash
+  npm run logs
+  ```
+- **Parar os containers:**
+  ```bash
+  npm run stop
+  ```
 
-npm run docker:build
-Iniciar o sistema
+---
 
-Para iniciar os containers:
-
-npm start
-Iniciar em segundo plano
-
-Para iniciar os containers em segundo plano:
-
-npm run start:background
-Visualizar os logs
-
-Para acompanhar os logs dos containers:
-
-npm run logs
-Parar os containers
-
-Para parar os containers:
-
-npm run stop
-🧪 Testes Automatizados
+## 🧪 Testes Automatizados
 
 O projeto possui testes automatizados para o frontend e para o backend.
 
 Todos os testes podem ser executados através de um único comando:
 
+```bash
 npm test
+```
 
 O comando executa os testes do frontend e, em seguida, os testes do backend.
 
-Frontend
+### Frontend
 
-O frontend utiliza Vitest para os testes automatizados.
+O frontend utiliza **Vitest** para os testes automatizados. Atualmente são executados 2 testes:
 
-Atualmente são executados 2 testes:
-
-Geração das iniciais do título do livro;
-Normalização dos dados de um livro.
+- Geração das iniciais do título do livro;
+- Normalização dos dados de um livro.
 
 Para executar somente os testes do frontend:
-
+```bash
 npm run test:frontend
-Backend
+```
 
-O backend utiliza Pytest.
+### Backend
+
+O backend utiliza **Pytest**.
 
 #### Classificação dos Testes
 
@@ -256,145 +255,97 @@ O backend utiliza Pytest.
 | `test_api.py` | Fluxo completo (Login, Livros, Empréstimo) | Regressão / E2E | Regras de negócio executadas sem erro |
 | `test_api.py` | Restrições de permissões (RBAC) de Aluno | Sanidade / Regressão | Bloqueio 403 para operações indevidas |
 | `frontend.test.js` | Utilitários (Iniciais e Normalização de livros) | Unitário | Funções retornam dados formatados corretamente |
+
 Os testes verificam o funcionamento da API e um fluxo básico das operações da biblioteca, incluindo:
-
-
-Endpoint /health;
-Autenticação;
-Criação de categorias;
-Criação de livros;
-Criação de exemplares;
-Criação de usuários;
-Criação de empréstimos;
-Renovação de empréstimos;
-Devolução de exemplares.
+- Endpoint `/health`
+- Autenticação
+- Criação de categorias
+- Criação de livros
+- Criação de exemplares
+- Criação de usuários
+- Criação de empréstimos
+- Renovação de empréstimos
+- Devolução de exemplares
 
 Para executar somente os testes do backend:
-
+```bash
 npm run test:backend
-Resultado dos testes
+```
 
-Os testes atualmente apresentam o seguinte resultado:
+**Resultado dos testes:**
+- Frontend: 2 testes passando
+- Backend: 5 testes passando
+- **Total:** 7 testes passando
 
-Frontend: 2 testes passando
-Backend: 3 testes passando
+---
 
-Total:
-
-5 testes passando
-🔄 CI/CD com GitHub Actions
+## 🔄 CI/CD com GitHub Actions
 
 O projeto utiliza GitHub Actions para automatizar a integração contínua e a construção das imagens Docker.
 
 O workflow está localizado em:
+`.github/workflows/ci-cd.yml`
 
-.github/workflows/ci-cd.yml
+**O pipeline segue o seguinte fluxo:**
+`Código` → `GitHub Actions` → `Configuração do Python` → `Configuração do Node.js` → `Instalação das dependências` → `Execução dos testes` → `Docker Build`
 
-O pipeline segue o seguinte fluxo:
+O pipeline executa `npm install` e depois `npm test`. Somente após a conclusão bem-sucedida dos testes é executado o build das imagens Docker.
 
-Código
-  ↓
-GitHub Actions
-  ↓
-Configuração do Python
-  ↓
-Configuração do Node.js
-  ↓
-Instalação das dependências
-  ↓
-Execução dos testes
-  ↓
-Testes aprovados?
-  ↓
-   SIM
-  ↓
-Docker Build
+- ❌ **Falha nos testes:** Caso algum teste falhe, o pipeline é interrompido e a etapa de Docker Build não é executada.
+- ✅ **Testes aprovados:** Caso todos os testes sejam aprovados, o pipeline prossegue para a construção das imagens. Essa estratégia garante que uma versão com testes quebrados não avance.
 
-O pipeline executa:
+---
 
-npm install
-
-e depois:
-
-npm test
-
-Somente após a conclusão bem-sucedida dos testes é executado o build das imagens Docker.
-
-❌ Falha nos testes
-
-Caso algum teste falhe, o pipeline é interrompido e a etapa de Docker Build não é executada.
-
-✅ Testes aprovados
-
-Caso todos os testes sejam aprovados, o pipeline prossegue para a construção das imagens Docker.
-
-Essa estratégia garante que uma versão com testes quebrados não avance para a etapa de construção dos containers.
-
-🌿 Fluxo de Branches
+## 🌿 Fluxo de Branches
 
 O projeto utiliza o seguinte fluxo de desenvolvimento:
 
-develop
-   ↓
-Pull Request
-   ↓
-main
+`develop` → `Pull Request` → `main`
 
-As alterações devem ser desenvolvidas na branch develop.
+- As alterações devem ser desenvolvidas na branch `develop`.
+- Após a implementação e validação, é realizada uma **Pull Request** para a branch `main`.
+- A branch `main` representa a versão principal do projeto (nenhuma alteração deve ser feita diretamente nela).
 
-Após a implementação e validação dos testes, é realizada uma Pull Request para a branch main.
+---
 
-A branch main representa a versão principal do projeto.
+## 🔐 Boas Práticas
 
-Não devem ser realizadas alterações diretamente na main.
+O projeto utiliza um arquivo `.gitignore` para evitar o versionamento de arquivos que não devem ser enviados ao repositório, como `node_modules/`, arquivos `.env`, bancos de dados locais, caches do Python, etc. As dependências são declaradas nos arquivos de configuração correspondentes.
 
-🔐 Boas Práticas
+---
 
-O projeto utiliza um arquivo .gitignore para evitar o versionamento de arquivos que não devem ser enviados ao repositório.
+## 🚀 Comandos Principais
 
-Entre eles:
+| Comando | Função |
+| --- | --- |
+| `npm install` | Instala as dependências do projeto |
+| `npm test` | Executa todos os testes |
+| `npm run test:frontend` | Executa os testes do frontend |
+| `npm run test:backend` | Executa os testes do backend |
+| `npm start` | Inicia o sistema com Docker |
+| `npm run start:background` | Inicia os containers em segundo plano |
+| `npm run docker:build` | Constrói as imagens Docker |
+| `npm run logs` | Exibe os logs dos containers |
+| `npm run stop` | Para os containers |
 
-node_modules/;
-arquivos .env;
-bancos de dados locais;
-caches do Python;
-arquivos temporários;
-banco de dados utilizado nos testes.
+---
 
-As dependências do projeto são declaradas nos arquivos de configuração correspondentes, permitindo que o ambiente seja reproduzido pelos integrantes da equipe.
-
-🚀 Comandos Principais
-Comando	Função
-npm install	Instala as dependências do projeto
-npm test	Executa todos os testes
-npm run test:frontend	Executa os testes do frontend
-npm run test:backend	Executa os testes do backend
-npm start	Inicia o sistema com Docker
-npm run start:background	Inicia os containers em segundo plano
-npm run docker:build	Constrói as imagens Docker
-npm run logs	Exibe os logs dos containers
-npm run stop	Para os containers
-📌 Status do Projeto
+## 📌 Status do Projeto
 
 Atualmente, o projeto possui:
 
-✅ Backend FastAPI;
-✅ Frontend web;
-✅ Banco de dados SQLite;
-✅ Autenticação;
-✅ Testes automatizados;
-✅ Testes do frontend;
-✅ Testes do backend;
-✅ Docker;
-✅ Docker Compose;
-✅ GitHub Actions;
-✅ Pipeline CI/CD;
-✅ Terraform;
-✅ Ansible;
-✅ Fluxo de branches develop → Pull Request → main.
-📄 Licença
+- ✅ Backend FastAPI
+- ✅ Frontend web
+- ✅ Banco de dados SQLite
+- ✅ Autenticação
+- ✅ Testes automatizados (Frontend e Backend)
+- ✅ Docker & Docker Compose
+- ✅ GitHub Actions & Pipeline CI/CD
+- ✅ Terraform & Ansible
+- ✅ Fluxo de branches estruturado
+
+---
+
+## 📄 Licença
 
 Projeto desenvolvido para fins acadêmicos.
-
-
-```
