@@ -345,12 +345,12 @@ def test_leitor_permissions():
         ex_id = ex_resp.json()["id"]
 
         # Cria o Usuário Leitor e Outro Usuário Leitor
-        client.post("/usuarios", json={"nome": "Leitor 1", "email": "l1@example.com", "senha": "123", "perfil": "LEITOR"}, headers=admin_headers)
-        resp_l2 = client.post("/usuarios", json={"nome": "Leitor 2", "email": "l2@example.com", "senha": "123", "perfil": "LEITOR"}, headers=admin_headers)
+        client.post("/usuarios", json={"nome": "Leitor 1", "email": "l1@example.com", "senha": "senha123", "perfil": "LEITOR"}, headers=admin_headers)
+        resp_l2 = client.post("/usuarios", json={"nome": "Leitor 2", "email": "l2@example.com", "senha": "senha123", "perfil": "LEITOR"}, headers=admin_headers)
         id_l2 = resp_l2.json()["id"]
 
         # 2. Login como Leitor 1
-        login_leitor = client.post("/auth/login", data={"username": "l1@example.com", "password": "123"})
+        login_leitor = client.post("/auth/login", data={"username": "l1@example.com", "password": "senha123"})
         leitor_headers = {"Authorization": f"Bearer {login_leitor.json()['access_token']}"}
 
         # 3. Testa Restrição de Cadastro de Livros
