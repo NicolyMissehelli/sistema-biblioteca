@@ -32,7 +32,7 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 
 ## 👥 Integrantes e Papéis
 
-1. Gabriel - Analista de ifraestrutura
+1. Gabriel - Analista de infraestrutura
 2. Keroly - DevOps
 3. Nicoly - Product Owner / Scrum Master
 4. Pedro Paulo - Desenvolvedor
