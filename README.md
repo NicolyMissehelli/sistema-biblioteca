@@ -254,6 +254,7 @@ O backend utiliza Pytest.
 | `test_health.py` | Disponibilidade da API | Smoke Test | API responde com HTTP 200 |
 | `test_health.py` | Versão do build/deploy | Sanidade / Smoke | Versão 1.0.0 ativa |
 | `test_api.py` | Fluxo completo (Login, Livros, Empréstimo) | Regressão / E2E | Regras de negócio executadas sem erro |
+| `test_api.py` | Restrições de permissões (RBAC) de Aluno | Sanidade / Regressão | Bloqueio 403 para operações indevidas |
 | `frontend.test.js` | *[Front vai preencher]* | *[Front vai preencher]* | *[Front vai preencher]* |
 
 *(Nota: Os testes de backend acima foram implementados e classificados por Tacyo. O integrante do frontend atualizará as informações do `frontend.test.js`.)*

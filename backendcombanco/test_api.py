@@ -312,3 +312,63 @@ def test_login_and_basic_library_flow():
 
         # Depois da devolução, o status deve ser DEVOLVIDO.
         assert returned.json()["status"] == "DEVOLVIDO"
+
+
+# ============================================================
+# TESTE 3 — RESTRIÇÕES DE ACESSO (ALUNO / LEITOR)
+# ============================================================
+
+def test_leitor_permissions():
+    """
+    Testa se o sistema bloqueia o acesso indevido para usuários do tipo LEITOR.
+    Atendendo as seguintes tarefas:
+    - Separar permissões de aluno e administrador
+    - Restringir cadastro de livros para alunos
+    - Definir acesso dos alunos ao sistema
+    - Impedir empréstimos envolvendo alunos
+    """
+    with TestClient(app) as client:
+        # 1. Login como Administrador para criar os dados base
+        login_admin = client.post("/auth/login", data={"username": "admin@test.local", "password": "senha123"})
+        admin_headers = {"Authorization": f"Bearer {login_admin.json()['access_token']}"}
+
+        # Cria a categoria para o livro
+        cat_resp = client.post("/categorias", json={"nome": "Ficção"}, headers=admin_headers)
+        cat_id = cat_resp.json()["id"]
+
+        # Cria um livro (que o admin pode)
+        livro_resp = client.post("/livros", json={"titulo": "1984", "autor": "George Orwell", "categoria_id": cat_id}, headers=admin_headers)
+        livro_id = livro_resp.json()["id"]
+
+        # Cria o exemplar
+        ex_resp = client.post(f"/livros/{livro_id}/exemplares", json={"tombo": "T-1984"}, headers=admin_headers)
+        ex_id = ex_resp.json()["id"]
+
+        # Cria o Usuário Leitor e Outro Usuário Leitor
+        client.post("/usuarios", json={"nome": "Leitor 1", "email": "l1@example.com", "senha": "123", "perfil": "LEITOR"}, headers=admin_headers)
+        resp_l2 = client.post("/usuarios", json={"nome": "Leitor 2", "email": "l2@example.com", "senha": "123", "perfil": "LEITOR"}, headers=admin_headers)
+        id_l2 = resp_l2.json()["id"]
+
+        # 2. Login como Leitor 1
+        login_leitor = client.post("/auth/login", data={"username": "l1@example.com", "password": "123"})
+        leitor_headers = {"Authorization": f"Bearer {login_leitor.json()['access_token']}"}
+
+        # 3. Testa Restrição de Cadastro de Livros
+        # Leitor não pode criar livros
+        forbid_book = client.post("/livros", json={"titulo": "Livro Proibido", "autor": "Autor", "categoria_id": cat_id}, headers=leitor_headers)
+        assert forbid_book.status_code == 403
+
+        # Leitor não pode criar categorias
+        forbid_cat = client.post("/categorias", json={"nome": "Nova Cat"}, headers=leitor_headers)
+        assert forbid_cat.status_code == 403
+
+        # 4. Testa Restrição de Empréstimos Envolvendo (Outros) Alunos
+        # Leitor 1 tenta criar um empréstimo informando o ID do Leitor 2
+        forbid_emp = client.post("/emprestimos", json={"exemplar_id": ex_id, "usuario_id": id_l2}, headers=leitor_headers)
+        assert forbid_emp.status_code == 403
+
+        # 5. Acesso liberado apenas para leitura
+        # Leitor consegue ver os livros cadastrados
+        allow_get_livros = client.get("/livros", headers=leitor_headers)
+        assert allow_get_livros.status_code == 200
+        assert len(allow_get_livros.json()) > 0
