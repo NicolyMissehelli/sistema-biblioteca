@@ -36,7 +36,7 @@ Durante o planejamento, verificamos:
 - [x] Execução dos testes por um único comando.
 - [x] Funcionamento do GitHub Actions.
 - [x] Execução do build Docker após os testes.
-- [ ] Simulação de falha no pipeline.
+- [x] Simulação de falha no pipeline.
 - [x] Atualização do README e das evidências.
 - [ ] Commits identificados de todos os integrantes.
 
@@ -218,7 +218,7 @@ Uma tarefa será considerada concluída quando:
 - [x] README.md atualizado.
 - [x] Pipeline executado com sucesso.
 - [ ] Histórico de commits dos integrantes.
-- [ ] Evidência da simulação de falha e correção.
+- [x] Evidência da simulação de falha e correção.
 
 ---
 
