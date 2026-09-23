@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - main
+      - ci-cd-final
 
   pull_request:
     branches:
