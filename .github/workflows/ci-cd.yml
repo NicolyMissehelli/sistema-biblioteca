@@ -1,4 +1,3 @@
-
 name: CI/CD - Sistema Biblioteca
 
 on:
@@ -6,6 +5,7 @@ on:
     branches:
       - develop
       - main
+      - ci-cd-final
 
   pull_request:
     branches:
@@ -14,53 +14,107 @@ on:
 jobs:
 
   # ============================================================
-  # CI - TESTES BACKEND
+  # TESTES FRONTEND
   # ============================================================
 
-  test-backend:
-    name: Testes Backend
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Baixar código
-        uses: actions/checkout@v4
-
-      - name: Configurar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-
-      - name: Instalar dependências Backend
-        run: python -m pip install -r backendcombanco/requirements.txt
-
-      - name: Executar testes Backend
-        run: python -m pytest backendcombanco
-
-
-  # ============================================================
-  # CI - TESTES FRONTEND
-  # ============================================================
-
-  test-frontend:
+  frontend-tests:
     name: Testes Frontend
     runs-on: ubuntu-latest
 
     steps:
 
+      # 1. Baixar o código
       - name: Baixar código
         uses: actions/checkout@v4
 
+      # 2. Configurar Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
+      # 3. Instalar dependências
       - name: Instalar dependências Frontend
-        run: npm install --prefix frontend-biblioteca
+        working-directory: frontend
+        run: npm ci
 
-      - name: Executar testes Frontend
-        run: npm test --prefix frontend-biblioteca
+      # ========================================================
+      # SMOKE TEST
+      # ========================================================
+
+      - name: Smoke Test - Frontend
+        working-directory: frontend
+        run: npm run test:smoke
+
+      # ========================================================
+      # SANITY TEST
+      # ========================================================
+
+      - name: Sanity Test - Frontend
+        working-directory: frontend
+        run: npm run test:sanity
+
+      # ========================================================
+      # TESTE DE REGRESSÃO
+      # ========================================================
+
+      - name: Teste de Regressão - Frontend
+        working-directory: frontend
+        run: npm run test:regression
+
+
+  # ============================================================
+  # TESTES BACKEND
+  # ============================================================
+
+  backend-tests:
+    name: Testes Backend
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # 1. Baixar o código
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      # 2. Configurar Node.js
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      # 3. Instalar dependências
+      - name: Instalar dependências Backend
+        working-directory: backend
+        run: npm ci
+
+      # ========================================================
+      # SMOKE TEST
+      # ========================================================
+
+      - name: Smoke Test - Backend
+        working-directory: backend
+        run: npm run test:smoke
+
+      # ========================================================
+      # SANITY TEST
+      # ========================================================
+
+      - name: Sanity Test - Backend
+        working-directory: backend
+        run: npm run test:sanity
+
+      # ========================================================
+      # TESTE DE REGRESSÃO
+      # ========================================================
+
+      - name: Teste de Regressão - Backend
+        working-directory: backend
+        run: npm run test:regression
 
 
   # ============================================================
@@ -71,14 +125,18 @@ jobs:
     name: Docker Build
     runs-on: ubuntu-latest
 
+    # Docker só executa se FRONTEND e BACKEND
+    # passarem em todos os testes.
     needs:
-      - test-backend
-      - test-frontend
+      - frontend-tests
+      - backend-tests
 
     steps:
 
+      # 1. Baixar código
       - name: Baixar código
         uses: actions/checkout@v4
 
+      # 2. Construir imagens Docker
       - name: Construir imagens Docker
         run: docker compose -f backendcombanco/docker-compose.yml build
