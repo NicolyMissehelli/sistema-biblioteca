@@ -32,37 +32,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
 
-      # 3. Instalar dependências
+      # 3. Instalar dependências Frontend
       - name: Instalar dependências Frontend
-        working-directory: frontend
+        working-directory: frontend-biblioteca
         run: npm ci
 
       # ========================================================
-      # SMOKE TEST
+      # TESTES FRONTEND
       # ========================================================
 
-      - name: Smoke Test - Frontend
-        working-directory: frontend
-        run: npm run test:smoke
-
-      # ========================================================
-      # SANITY TEST
-      # ========================================================
-
-      - name: Sanity Test - Frontend
-        working-directory: frontend
-        run: npm run test:sanity
-
-      # ========================================================
-      # TESTE DE REGRESSÃO
-      # ========================================================
-
-      - name: Teste de Regressão - Frontend
-        working-directory: frontend
-        run: npm run test:regression
+      - name: Testes Frontend
+        working-directory: frontend-biblioteca
+        run: npm test
 
 
   # ============================================================
@@ -79,42 +61,22 @@ jobs:
       - name: Baixar código
         uses: actions/checkout@v4
 
-      # 2. Configurar Node.js
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
+      # 2. Configurar Python
+      - name: Configurar Python
+        uses: actions/setup-python@v5
         with:
-          node-version: "20"
-          cache: npm
-          cache-dependency-path: backend/package-lock.json
+          python-version: "3.12"
 
-      # 3. Instalar dependências
+      # 3. Instalar dependências Backend
       - name: Instalar dependências Backend
-        working-directory: backend
-        run: npm ci
+        run: python -m pip install -r backendcombanco/requirements.txt
 
       # ========================================================
-      # SMOKE TEST
+      # TESTES BACKEND
       # ========================================================
 
-      - name: Smoke Test - Backend
-        working-directory: backend
-        run: npm run test:smoke
-
-      # ========================================================
-      # SANITY TEST
-      # ========================================================
-
-      - name: Sanity Test - Backend
-        working-directory: backend
-        run: npm run test:sanity
-
-      # ========================================================
-      # TESTE DE REGRESSÃO
-      # ========================================================
-
-      - name: Teste de Regressão - Backend
-        working-directory: backend
-        run: npm run test:regression
+      - name: Testes Backend
+        run: python -m pytest backendcombanco
 
 
   # ============================================================
