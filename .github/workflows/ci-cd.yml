@@ -36,7 +36,7 @@ jobs:
       # 3. Instalar dependências Frontend
       - name: Instalar dependências Frontend
         working-directory: frontend-biblioteca
-        run: npm --no-audit --no-fund --loglevel verbose
+        run: npm ci --no-audit --no-fund --loglevel verbose
 
       # ========================================================
       # TESTES FRONTEND
