@@ -206,6 +206,20 @@ Uma tarefa será considerada concluída quando:
 - [x] O critério de aceitação for atendido.
 - [x] O cartão do Kanban estiver atualizado.
 
+### Atividade Integradora 1 — Artefatos Docker e GHCR
+
+- [x] Testes automatizados conferidos e executados pelo workflow.
+- [x] Dockerfiles do backend e frontend disponíveis.
+- [x] Compose revisado para construção local sem exigir `.env` obrigatório.
+- [x] Imagem Docker construída pelo job após a aprovação dos testes.
+- [x] Workflow base do GitHub Actions configurado.
+- [ ] Login e publicação da imagem `1.0.0` no GHCR.
+- [ ] Download da imagem `1.0.0` com `docker pull`.
+- [ ] Execução e validação da imagem obtida do GHCR.
+- [ ] Pequena alteração registrada em novo commit.
+- [ ] Publicação da imagem `1.0.1`.
+- [ ] Evidências finais da entrega reunidas.
+
 ---
 
 ## 📦 9. Entregas Obrigatórias
@@ -219,6 +233,8 @@ Uma tarefa será considerada concluída quando:
 - [x] Pipeline executado com sucesso.
 - [ ] Histórico de commits dos integrantes.
 - [x] Evidência da simulação de falha e correção.
+- [ ] Página do pacote no GHCR com as versões `1.0.0` e `1.0.1`.
+- [ ] Comando `docker pull` e container da versão publicada registrados.
 
 ---
 
