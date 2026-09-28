@@ -32,11 +32,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend-biblioteca/package-lock.json
 
       # 3. Instalar dependências Frontend
       - name: Instalar dependências Frontend
         working-directory: frontend-biblioteca
-        run: npm ci --no-audit --no-fund --loglevel verbose
+        run: npm ci --no-audit --no-fund
 
       # ========================================================
       # TESTES FRONTEND
