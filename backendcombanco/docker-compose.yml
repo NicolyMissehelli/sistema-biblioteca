@@ -4,6 +4,9 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     container_name: biblioteca-backend
+    env_file:
+      - path: .env
+        required: false
     ports:
       - "8000:8000"
     volumes:
