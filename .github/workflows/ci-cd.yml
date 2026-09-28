@@ -82,18 +82,21 @@ jobs:
 
 
   # ============================================================
-  # DOCKER BUILD
+  # DOCKER BUILD & PUSH (GHCR)
   # ============================================================
 
   docker:
-    name: Docker Build
+    name: Docker Build & Push (GHCR)
     runs-on: ubuntu-latest
 
-    # Docker só executa se FRONTEND e BACKEND
-    # passarem em todos os testes.
+    # Docker só executa se FRONTEND e BACKEND passarem em todos os testes.
     needs:
       - frontend-tests
       - backend-tests
+
+    permissions:
+      contents: read
+      packages: write # Permissão obrigatória para publicar no GHCR
 
     steps:
 
@@ -101,6 +104,32 @@ jobs:
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Construir imagens Docker
-      - name: Construir imagens Docker
-        run: docker compose -f backendcombanco/docker-compose.yml build
+      # 2. Configurar o Docker Buildx
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 3. Autenticar no GitHub Container Registry (GHCR)
+      - name: Autenticar no GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 4. Construir e Publicar a Imagem do Backend
+      - name: Construir e publicar imagem do Backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backendcombanco
+          file: ./backendcombanco/docker/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/biblioteca-backend:1.0.0
+
+      # 5. Construir e Publicar a Imagem do Frontend
+      - name: Construir e publicar imagem do Frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend-biblioteca
+          file: ./frontend-biblioteca/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/biblioteca-frontend:1.0.0
