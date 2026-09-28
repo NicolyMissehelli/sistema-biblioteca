@@ -191,6 +191,9 @@ def test_login_and_basic_library_flow():
         # A criação do livro deve retornar HTTP 201.
         assert book.status_code == 201
 
+        # O campo categoria_nome deve estar preenchido corretamente (não null).
+        assert book.json()["categoria_nome"] == "Tecnologia"
+
         # Guarda o ID do livro.
         book_id = book.json()["id"]
 
@@ -238,6 +241,9 @@ def test_login_and_basic_library_flow():
         
         # A criação do usuário deve retornar HTTP 201.
         assert reader.status_code == 201
+
+        # O campo ativo deve ser true ao criar um aluno.
+        assert reader.json()["ativo"] == True
 
 
         # ====================================================
