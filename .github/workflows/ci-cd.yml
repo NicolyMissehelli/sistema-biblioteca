@@ -25,11 +25,11 @@ jobs:
 
       # 1. Baixar o código
       - name: Baixar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # 2. Configurar Node.js
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "20"
           cache: npm
@@ -61,11 +61,11 @@ jobs:
 
       # 1. Baixar o código
       - name: Baixar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # 2. Configurar Python
       - name: Configurar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -99,7 +99,7 @@ jobs:
 
       # 1. Baixar código
       - name: Baixar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # 2. Construir imagens Docker
       - name: Construir imagens Docker
