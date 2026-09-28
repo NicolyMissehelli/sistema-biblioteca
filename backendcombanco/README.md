@@ -47,7 +47,7 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configuração
-Copie `.env.example` para `.env`.
+Copie `.env.example` para `.env` e substitua a chave JWT e a senha do administrador por valores fortes. O arquivo `.env` é ignorado pelo Git e não deve ser commitado.
 
 Para Docker, SQLite fica no arquivo persistente `data/biblioteca.db`:
 `sqlite:////data/biblioteca.db`
