@@ -36,7 +36,7 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 2. Keroly - DevOps
 3. Nicoly - Product Owner / Scrum Master
 4. Pedro Paulo - Desenvolvedor
-5. Rhoney - Desenvolvedor
+5. Vinicius - Desenvolvedor
 6. Tacyo Henrique - Desenvolvedor Backend / Responsável por Testes / DevOps
 
 ---
