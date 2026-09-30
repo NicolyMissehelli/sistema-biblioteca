@@ -43,7 +43,7 @@ Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a i
 
 ## 📊 Quadro Kanban
 
-O acompanhamento das tarefas da Sprint (Sprint Backlog) é realizado no nosso quadro do Trello.
+O acompanhamento das tarefas da Sprint (Sprint Backlog) é realizado no nosso quadro do Trello...
 🔗 **Link do Quadro:** [Trello - Biblioteca Novaris Tech](https://trello.com/b/tseoOgOv)
 
 ---

@@ -1,16 +1,9 @@
-name: CI/CD - Sistema Biblioteca
-run-name: Release v1.0.0 na branch ${{ github.ref_name }} por @${{ github.actor }}
+name: Docker GHCR
 
 on:
   push:
     branches:
       - develop
-      - main
-      - ci-cd-final
-
-  pull_request:
-    branches:
-      - main
 
 jobs:
 
@@ -23,12 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      # 1. Baixar o código
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Configurar Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v5
         with:
@@ -36,16 +26,11 @@ jobs:
           cache: npm
           cache-dependency-path: frontend-biblioteca/package-lock.json
 
-      # 3. Instalar dependências Frontend
-      - name: Instalar dependências Frontend
+      - name: Instalar dependências
         working-directory: frontend-biblioteca
         run: npm ci --no-audit --no-fund
 
-      # ========================================================
-      # TESTES FRONTEND
-      # ========================================================
-
-      - name: Testes Frontend
+      - name: Executar testes
         working-directory: frontend-biblioteca
         run: npm test
 
@@ -59,62 +44,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      # 1. Baixar o código
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Configurar Python
       - name: Configurar Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      # 3. Instalar dependências Backend
-      - name: Instalar dependências Backend
+      - name: Instalar dependências
         run: python -m pip install -r backendcombanco/requirements.txt
 
-      # ========================================================
-      # TESTES BACKEND
-      # ========================================================
-
-      - name: Testes Backend
+      - name: Executar testes
         run: python -m pytest backendcombanco
 
 
   # ============================================================
-  # DOCKER BUILD & PUSH (GHCR)
+  # BUILD E PUBLICAÇÃO NO GHCR
   # ============================================================
 
   docker:
-    name: Docker Build & Push (GHCR)
+    name: Build e Publicação GHCR
     runs-on: ubuntu-latest
 
-    # Docker só executa se FRONTEND e BACKEND passarem em todos os testes.
+    # Só executa se TODOS os testes passarem
     needs:
       - frontend-tests
       - backend-tests
 
     permissions:
       contents: read
-      packages: write # Permissão obrigatória para publicar no GHCR
+      packages: write
 
     steps:
-
-      # 1. Baixar código
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Converter o nome do proprietário do repositório para minúsculo
       - name: Converter OWNER para minúsculo
         run: |
           echo "repo_owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
-      # 3. Configurar o Docker Buildx
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 4. Autenticar no GitHub Container Registry (GHCR)
       - name: Autenticar no GHCR
         uses: docker/login-action@v3
         with:
@@ -122,20 +94,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 5. Construir e Publicar a Imagem do Backend
-      - name: Construir e publicar imagem do Backend
+      - name: Construir e publicar Backend
         uses: docker/build-push-action@v6
         with:
           context: ./backendcombanco
           file: ./backendcombanco/docker/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:v1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:1.0.0
 
-      # 6. Construir e Publicar a Imagem do Frontend
-      - name: Construir e publicar imagem do Frontend
+      - name: Construir e publicar Frontend
         uses: docker/build-push-action@v6
         with:
           context: ./frontend-biblioteca
           file: ./frontend-biblioteca/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:v1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:1.0.0
