@@ -1,4 +1,5 @@
 name: CI/CD - Sistema Biblioteca
+run-name: Release v1.0.0 na branch ${{ github.ref_name }} por @${{ github.actor }}
 
 on:
   push:
@@ -128,7 +129,7 @@ jobs:
           context: ./backendcombanco
           file: ./backendcombanco/docker/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:v1.0.0
 
       # 6. Construir e Publicar a Imagem do Frontend
       - name: Construir e publicar imagem do Frontend
@@ -137,4 +138,4 @@ jobs:
           context: ./frontend-biblioteca
           file: ./frontend-biblioteca/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:v1.0.0
