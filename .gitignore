@@ -22,6 +22,7 @@ venv/
 # Variáveis de ambiente
 .env
 .env.*
+!.env.example
 
 # Bancos SQLite
 *.db
