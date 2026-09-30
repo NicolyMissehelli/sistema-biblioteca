@@ -104,11 +104,16 @@ jobs:
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Configurar o Docker Buildx
+      # 2. Converter o nome do proprietário do repositório para minúsculo
+      - name: Converter OWNER para minúsculo
+        run: |
+          echo "repo_owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      # 3. Configurar o Docker Buildx
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 3. Autenticar no GitHub Container Registry (GHCR)
+      # 4. Autenticar no GitHub Container Registry (GHCR)
       - name: Autenticar no GHCR
         uses: docker/login-action@v3
         with:
@@ -116,20 +121,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 4. Construir e Publicar a Imagem do Backend
+      # 5. Construir e Publicar a Imagem do Backend
       - name: Construir e publicar imagem do Backend
         uses: docker/build-push-action@v6
         with:
           context: ./backendcombanco
           file: ./backendcombanco/docker/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/biblioteca-backend:1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:1.0.0
 
-      # 5. Construir e Publicar a Imagem do Frontend
+      # 6. Construir e Publicar a Imagem do Frontend
       - name: Construir e publicar imagem do Frontend
         uses: docker/build-push-action@v6
         with:
           context: ./frontend-biblioteca
           file: ./frontend-biblioteca/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/biblioteca-frontend:1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:1.0.0
