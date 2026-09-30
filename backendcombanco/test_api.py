@@ -136,7 +136,7 @@ def test_login_and_basic_library_flow():
         )
 
         # O login deve retornar HTTP 200.
-        assert login.status_code == 200
+        assert login.status_code == 300
 
         # Extrai o token JWT retornado pela API.
         token = login.json()["access_token"]
