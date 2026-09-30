@@ -4,7 +4,8 @@
   "private": true,
   "description": "Sistema da Biblioteca - projeto com CI/CD e Docker",
   "scripts": {
-    "postinstall": "python -m pip install -r backendcombanco/requirements.txt && npm install --prefix frontend-biblioteca",
+    "postinstall": "npm install --prefix frontend-biblioteca",
+    "setup:backend": "python -m venv .venv && .venv/Scripts/pip install -r backendcombanco/requirements.txt",
     "test:frontend": "npm test --prefix frontend-biblioteca",
     "test:backend": "python -m pytest backendcombanco",
     "test": "npm run test:frontend && npm run test:backend",
