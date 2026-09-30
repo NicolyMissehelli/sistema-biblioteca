@@ -50,6 +50,12 @@ def health():
     return {"status": "ok", "service": "biblioteca-api"}
 
 
+@app.get("/version")
+def version():
+    return {"version": "1.0.0", "status": "online", "service": "biblioteca-api"}
+
+
+
 @app.post("/auth/login", response_model=TokenResponse)
 def login(data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.scalar(select(Usuario).where(Usuario.email == data.username))
@@ -68,7 +74,7 @@ def criar_usuario(data: UsuarioCreate, db: Session = Depends(get_db), _=Depends(
     if db.scalar(select(Usuario).where(Usuario.email == data.email)):
         raise HTTPException(409, "Email já cadastrado")
     user = Usuario(
-        nome=data.nome, email=data.email, senha_hash=hash_password(data.senha), perfil=data.perfil
+        nome=data.nome, email=data.email, senha_hash=hash_password(data.senha), perfil=data.perfil, ativo=True
     )
     db.add(user)
     db.commit()
@@ -107,7 +113,13 @@ def criar_livro(data: LivroCreate, db: Session = Depends(get_db), _=Depends(requ
     db.add(livro)
     db.commit()
     db.refresh(livro)
-    return livro
+    return {
+        "id": livro.id, "titulo": livro.titulo, "autor": livro.autor,
+        "isbn": livro.isbn, "editora": livro.editora,
+        "ano_publicacao": livro.ano_publicacao, "categoria_id": livro.categoria_id,
+        "categoria_nome": livro.categoria.nome,
+        "quantidade": 0, "disponiveis": 0
+    }
 
 
 @app.get("/livros", response_model=list[LivroOut])

@@ -3,12 +3,23 @@
   "version": "1.0.0",
   "private": true,
   "description": "Sistema da Biblioteca - projeto com CI/CD e Docker",
+
   "scripts": {
-    "postinstall": "npm install --prefix frontend-biblioteca",
-    "setup:backend": "python -m venv .venv && .venv/Scripts/pip install -r backendcombanco/requirements.txt",
+    "postinstall": "python -m pip install -r backendcombanco/requirements.txt && npm install --prefix frontend-biblioteca",
+
     "test:frontend": "npm test --prefix frontend-biblioteca",
     "test:backend": "python -m pytest backendcombanco",
+
+    "test:frontend:smoke": "npm test --prefix frontend-biblioteca -- --testPathPattern=smoke",
+    "test:frontend:sanity": "npm test --prefix frontend-biblioteca -- --testPathPattern=sanity",
+    "test:frontend:regression": "npm test --prefix frontend-biblioteca -- --testPathPattern=regression",
+
+    "test:backend:smoke": "python -m pytest backendcombanco/tests/smoke",
+    "test:backend:sanity": "python -m pytest backendcombanco/tests/sanity",
+    "test:backend:regression": "python -m pytest backendcombanco/tests/regression",
+
     "test": "npm run test:frontend && npm run test:backend",
+
     "start": "docker compose -f backendcombanco/docker-compose.yml up --build",
     "start:background": "docker compose -f backendcombanco/docker-compose.yml up -d --build",
     "stop": "docker compose -f backendcombanco/docker-compose.yml down",
