@@ -231,10 +231,10 @@ Uma tarefa será considerada concluída quando:
 - [x] Workflow do GitHub Actions.
 - [x] README.md atualizado.
 - [x] Pipeline executado com sucesso.
-- [ ] Histórico de commits dos integrantes.
+- [x] Histórico de commits dos integrantes.
 - [x] Evidência da simulação de falha e correção.
-- [ ] Página do pacote no GHCR com as versões `1.0.0` e `1.0.1`.
-- [ ] Comando `docker pull` e container da versão publicada registrados.
+- [x] Página do pacote no GHCR com as versões `1.0.0` e `1.0.1`.
+- [x] Comando `docker pull` e container da versão publicada registrados.
 
 ---
 
