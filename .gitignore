@@ -33,5 +33,6 @@ venv/
 test_biblioteca.db
 
 # Sistema operacional
+/APRESENTACAO.md
 .DS_Store
 Thumbs.db
