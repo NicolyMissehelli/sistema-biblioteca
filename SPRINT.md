@@ -1,6 +1,6 @@
 # 🏃 Sprint 1 — Sistema da Biblioteca
 
-**Período:** 16/09/2026 a 21/09/2026
+**Período:** 21/09/2026 a 05/10/2026
 
 ---
 
@@ -11,7 +11,7 @@
 | Product Owner / Scrum Master | Nicoly Missehelli |
 | Desenvolvedor Backend | Tacyo Henrique |
 | Desenvolvedor | Pedro Paulo |
-| Desenvolvedor | Rhoney Thiago |
+| Desenvolvedor | Vinicius |
 | DevOps | Kerolyn |
 | Analista de Requisitos | Gabriel Alves |
 
