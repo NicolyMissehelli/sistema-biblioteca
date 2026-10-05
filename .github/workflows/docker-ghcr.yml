@@ -100,7 +100,7 @@ jobs:
           context: ./backendcombanco
           file: ./backendcombanco/docker/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:1.0.1
 
       - name: Construir e publicar Frontend
         uses: docker/build-push-action@v6
@@ -108,4 +108,4 @@ jobs:
           context: ./frontend-biblioteca
           file: ./frontend-biblioteca/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:1.0.0
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:1.0.1
