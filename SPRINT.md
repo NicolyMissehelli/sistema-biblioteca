@@ -213,12 +213,14 @@ Uma tarefa será considerada concluída quando:
 - [x] Compose revisado para construção local sem exigir `.env` obrigatório.
 - [x] Imagem Docker construída pelo job após a aprovação dos testes.
 - [x] Workflow base do GitHub Actions configurado.
-- [ ] Login e publicação da imagem `1.0.0` no GHCR.
-- [ ] Download da imagem `1.0.0` com `docker pull`.
-- [ ] Execução e validação da imagem obtida do GHCR.
-- [ ] Pequena alteração registrada em novo commit.
-- [ ] Publicação da imagem `1.0.1`.
-- [ ] Evidências finais da entrega reunidas.
+- [x] Login e publicação da imagem `1.0.0` no GHCR (pipeline 36771818742).
+- [ ] Download local da imagem `1.0.0` (a versão `1.0.1` foi baixada e validada em 05/10).
+- [x] Execução e validação da imagem `1.0.1` obtida do GHCR.
+- [x] Pequena alteração registrada em novo commit (`b89a4cd`, texto do login).
+- [x] Publicação da imagem `1.0.1` (pipeline 37359820924).
+- [x] Evidências técnicas e roteiro reunidos em `APRESENTACAO.md` e `RELATORIO-VALIDACAO.md`.
+
+Validação de 05/10/2026: 2 testes frontend e 5 backend passaram; build local das duas imagens concluído. Imagens publicadas `1.0.1` executadas em ambiente separado, com frontend, proxy /api/health e login ADMIN validados. A configuração de publicação foi consolidada em um workflow, com push de imagens somente em tags de versão. A aprovação remota deste ajuste deve ser confirmada em Actions.
 
 ---
 

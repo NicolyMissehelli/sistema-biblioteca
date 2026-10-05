@@ -1,5 +1,5 @@
 name: CI/CD - Sistema Biblioteca
-run-name: Release v1.0.0 na branch ${{ github.ref_name }} por @${{ github.actor }}
+run-name: CI / Release ${{ github.ref_name }} por @${{ github.actor }}
 
 on:
   push:
@@ -111,6 +111,11 @@ jobs:
       - name: Converter OWNER para minúsculo
         run: |
           echo "repo_owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "image_version=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+          else
+            echo "image_version=$GITHUB_SHA" >> "$GITHUB_ENV"
+          fi
 
       # 3. Configurar o Docker Buildx
       - name: Configurar Docker Buildx
@@ -130,8 +135,8 @@ jobs:
         with:
           context: ./backendcombanco
           file: ./backendcombanco/docker/Dockerfile
-          push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:v1.0.0
+          push: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:${{ env.image_version }}
 
       # 6. Construir e Publicar a Imagem do Frontend
       - name: Construir e publicar imagem do Frontend
@@ -139,5 +144,5 @@ jobs:
         with:
           context: ./frontend-biblioteca
           file: ./frontend-biblioteca/Dockerfile
-          push: true
-          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:v1.0.0
+          push: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:${{ env.image_version }}
