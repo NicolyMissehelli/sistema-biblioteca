@@ -103,7 +103,7 @@ describe("Frontend do Sistema da Biblioteca", () => {
   // ============================================================
 
   test("deve gerar corretamente as iniciais do título do livro", () => {
-    expect(initials("Dom Casmurro")).toBe("XX");
+    expect(initials("Dom Casmurro")).toBe("DC");
   });
 
 
