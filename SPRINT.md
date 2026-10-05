@@ -214,7 +214,7 @@ Uma tarefa será considerada concluída quando:
 - [x] Imagem Docker construída pelo job após a aprovação dos testes.
 - [x] Workflow base do GitHub Actions configurado.
 - [x] Login e publicação da imagem `1.0.0` no GHCR (pipeline 36771818742).
-- [ ] Download local da imagem `1.0.0` (a versão `1.0.1` foi baixada e validada em 05/10).
+- [x] Download local das imagens `1.0.0` e `1.0.1` com Docker em 05/10.
 - [x] Execução e validação da imagem `1.0.1` obtida do GHCR.
 - [x] Pequena alteração registrada em novo commit (`b89a4cd`, texto do login).
 - [x] Publicação da imagem `1.0.1` (pipeline 37359820924).

@@ -7,6 +7,7 @@
 - Pytest executado dentro da imagem backend, com arquivos de teste montados somente para leitura: 5 testes passaram em 4,36 segundos; banco de teste isolado no container descartável.
 - `docker --context desktop-linux compose -f backendcombanco/docker-compose.yml build`: backend e frontend construídos localmente.
 - Compose `docker-compose.ghcr.yml`: pull e execução das duas imagens `1.0.1` concluídos.
+- Pull das imagens `1.0.0` concluído; backend digest `sha256:effdde267d009e80e4849e08f1b5f40f2d75a38e0084ad86937f26c33a3c213a`, frontend digest `sha256:470944e7a1aef8c568b8b56965fa86dc6fc51ac3234f7055d7d39eff50cc7bc3`.
 - GET `http://localhost:18080/`: HTML da aplicação recebido.
 - GET `http://localhost:18080/api/health`: status ok, comprovando encaminhamento do Nginx ao backend.
 - Login e GET /auth/me: admin@biblioteca.com, perfil ADMIN, ativo true. Token e senha omitidos das evidências.
