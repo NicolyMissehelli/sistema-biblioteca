@@ -143,13 +143,17 @@ Após clonar o repositório, entre na pasta do projeto:
 cd entrega-sistema
 ```
 
-A instalação das dependências pode ser realizada através de um único comando:
+A instalação para desenvolvimento e testes é explícita. Ative primeiro um ambiente virtual Python:
 
 ```bash
-npm install
+python3 -m venv backendcombanco/.venv
+source backendcombanco/.venv/bin/activate
+npm run setup
 ```
 
-O comando `npm install` executa o script `postinstall`, responsável por instalar as dependências do backend e do frontend.
+O comando `npm run setup` instala o frontend com `npm ci`, usando seu lockfile, e o backend com `python -m pip`. Não existe `postinstall` na raiz: `npm install` ou `npm ci` na raiz não instala outros projetos nem executa Python automaticamente.
+
+Para instalar apenas um componente, use `npm run install:frontend` ou `npm run install:backend`. Para executar com Docker, essas instalações locais não são necessárias.
 
 As dependências do backend são instaladas a partir do arquivo:
 `backendcombanco/requirements.txt`
@@ -289,7 +293,9 @@ O workflow está localizado em:
 **O pipeline segue o seguinte fluxo:**
 `Código` → `GitHub Actions` → `Configuração do Python` → `Configuração do Node.js` → `Instalação das dependências` → `Execução dos testes` → `Docker Build`
 
-O pipeline executa `npm install` e depois `npm test`. Somente após a conclusão bem-sucedida dos testes é executado o build das imagens Docker.
+Os testes dos dois componentes executam em jobs paralelos. O frontend usa Node.js 24, cache do npm e `npm ci` somente em `frontend-biblioteca`; o backend usa Python 3.12, cache do pip e `python -m pip`. Cada componente instala suas dependências uma vez e executa seus testes. Somente após ambos passarem é executado o build das imagens Docker. A publicação no GHCR ocorre somente em pushes de tags `v*`; pushes de branches e pull requests validam os builds sem publicar imagens.
+
+As instalações têm limite de cinco minutos. Os jobs de testes têm limite de dez minutos, e o de Docker, vinte. Falhas de aquisição de runner ou erros internos do GitHub Actions são problemas de infraestrutura, diferentes de falhas de instalação ou de testes; os logs e as anotações da execução indicam qual caso ocorreu.
 
 - ❌ **Falha nos testes:** Caso algum teste falhe, o pipeline é interrompido e a etapa de Docker Build não é executada.
 - ✅ **Testes aprovados:** Caso todos os testes sejam aprovados, o pipeline prossegue para a construção das imagens. Essa estratégia garante que uma versão com testes quebrados não avance.
@@ -318,7 +324,9 @@ O projeto utiliza um arquivo `.gitignore` para evitar o versionamento de arquivo
 
 | Comando | Função |
 | --- | --- |
-| `npm install` | Instala as dependências do projeto |
+| `npm run setup` | Instala frontend e backend com o venv Python ativo |
+| `npm run install:frontend` | Instala somente o frontend a partir do lockfile |
+| `npm run install:backend` | Instala somente o backend no Python ativo |
 | `npm test` | Executa todos os testes |
 | `npm run test:frontend` | Executa os testes do frontend |
 | `npm run test:backend` | Executa os testes do backend |

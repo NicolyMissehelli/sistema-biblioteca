@@ -5,7 +5,9 @@
   "description": "Sistema da Biblioteca - projeto com CI/CD e Docker",
 
   "scripts": {
-    "postinstall": "python -m pip install -r backendcombanco/requirements.txt && npm install --prefix frontend-biblioteca",
+    "install:frontend": "npm ci --prefix frontend-biblioteca --no-audit --no-fund",
+    "install:backend": "python -m pip install -r backendcombanco/requirements.txt",
+    "setup": "npm run install:frontend && npm run install:backend",
 
     "test:frontend": "npm test --prefix frontend-biblioteca",
     "test:backend": "python -m pytest backendcombanco",
