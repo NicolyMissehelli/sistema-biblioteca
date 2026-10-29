@@ -2,13 +2,27 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+ENV PYTHONPATH=/app
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-COPY app ./app
-COPY database ./database
+RUN apt-get update && apt-get install -y nginx \
+    && rm -rf /var/lib/apt/lists/*
 
+COPY backendcombanco/requirements.txt /app/requirements.txt
 
-EXPOSE 8000
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY backendcombanco/app/ /app/app/
+COPY backendcombanco/app/start.sh /app/start.sh
+COPY frontend-biblioteca/ /tmp/frontend/
+
+RUN mkdir -p /usr/share/nginx/html \
+    && cp -r /tmp/frontend/. /usr/share/nginx/html/ \
+    && chmod +x /app/start.sh
+
+COPY frontend-biblioteca/nginx/default.conf /etc/nginx/sites-available/default
+
+EXPOSE 80
+
+CMD ["/app/start.sh"]

@@ -1,25 +1,19 @@
 services:
-  backend:
+  biblioteca:
     build:
-      context: .
-      dockerfile: docker/Dockerfile
-    container_name: biblioteca-backend
-    env_file:
-      - path: .env
-        required: false
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./data:/data
-    restart: unless-stopped
+      context: ..
+      dockerfile: backendcombanco/docker/Dockerfile
 
-  frontend:
-    build:
-      context: ../frontend-biblioteca
-      dockerfile: Dockerfile
-    container_name: biblioteca-frontend
+    container_name: sistema-biblioteca
+
+    env_file:
+      - path: ./backendcombanco/.env
+        required: false
+
     ports:
       - "8080:80"
-    depends_on:
-      - backend
+
+    volumes:
+      - ./backendcombanco/data:/data
+
     restart: unless-stopped
